@@ -8,9 +8,6 @@ const
 
 bot.commands = new Discord.Collection()
 bot.color = "#0111FF";
-bot.function = {
-    createId: require("./Fonctions/createId")
-}
 
 bot.login(config.token)
 loadCommands(bot)
