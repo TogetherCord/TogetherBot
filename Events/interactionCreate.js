@@ -19,14 +19,6 @@ module.exports = async (bot, interaction) => {
 
     }
 
-    if(interaction.commandName === "start") {
-
-        let choices = ["LP", "PTS"]
-        let sortie = choices.filter(c => c.includes(entry))
-        await interaction.respond(entry === "" ? sortie.map(c => ({name: c, value: c})) : sortie.map(c => ({name: c, value: c})))
-
-    }
-
 }
 
     if(interaction.type === Discord.InteractionType.ApplicationCommand) {
