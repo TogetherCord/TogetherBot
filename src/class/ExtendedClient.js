@@ -1,4 +1,4 @@
-const { Client, Partials, Collection, GatewayIntentBits } = require("discord.js");
+const { Client, Partials, Collection, GatewayIntentBits, ActivityType } = require("discord.js");
 const config = require('../config');
 const commands = require("../handlers/commands");
 const events = require("../handlers/events");
@@ -24,15 +24,38 @@ module.exports = class extends Client {
         super({
             intents: [Object.keys(GatewayIntentBits)],
             partials: [Object.keys(Partials)],
-            presence: {
-                activities: [{
-                    name: 'something goes here',
-                    type: 4,
-                    state: 'Together with friends!'
-                }]
-            }
         });
     };
+
+    async displayConnectedUsers() {
+        try {
+            const response = await fetch('http://localhost:3333/instance/containers/connected', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                console.error(`Error: ${response.status} ${response.statusText}`);
+                return;
+            }
+            const data = await response.json();
+            const connectedIds = data.data;
+
+            await this.user.setPresence({
+                activities: [{
+                    name: `${connectedIds.length} User connected to the instance`,
+                    type: ActivityType.WATCHING,
+                    status: 'dnd'
+                }]
+            });
+        } catch (error) {
+            console.error('Erreur lors de la récupération des IDs connectés:', error);
+        }
+    }
+
+
+
 
     start = async () => {
         commands(this);
@@ -44,5 +67,6 @@ module.exports = class extends Client {
         await this.login(process.env.CLIENT_TOKEN || config.client.token);
 
         if (config.handler.deploy) deploy(this, config);
+        setInterval(() => this.displayConnectedUsers(), 1000);
     };
 };

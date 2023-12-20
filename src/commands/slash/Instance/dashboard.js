@@ -150,7 +150,7 @@ module.exports = {
                         .catch((error) => {
                             console.error('Error:', error);
                         });
-                }, 60 * 1000);
+                }, 20 * 1000);
             })
             .catch((error) => {
                 console.error('Error:', error);
