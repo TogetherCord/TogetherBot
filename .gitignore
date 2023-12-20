@@ -1,1 +1,9 @@
-./node_modules
+node_modules
+package-lock.json
+command.example.txt
+component.example.txt
+event.example.txt
+
+# DO NOT REMOVE THESE FOR SECURITY
+src/config.js
+.env

@@ -1,2 +1,0 @@
-# TogetherCord
-Just a project
