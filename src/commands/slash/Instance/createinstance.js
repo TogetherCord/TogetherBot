@@ -12,6 +12,9 @@ module.exports = {
     structure: new SlashCommandBuilder()
         .setName('createinstance')
         .setDescription('Create an instance for TogetherCord'),
+    options: {
+        developers: true,
+    },
     /**
      * @param {ExtendedClient} client
      * @param {ChatInputCommandInteraction} interaction
