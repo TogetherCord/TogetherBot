@@ -23,10 +23,11 @@ module.exports = {
      * @param {ExtendedClient} client
      * @param {ChatInputCommandInteraction} interaction
      */
+
     run: async (client, interaction) => {
         try {
             await interaction.deferReply();
-            const response = await fetch('http://localhost:3333/instance/containers/exists', {
+            const response = await fetch('http://90.103.73.192:3333/instance/containers/exists', {
                 method: 'POST',
                 body: JSON.stringify({
                     discordId: interaction.user.id
@@ -43,8 +44,12 @@ module.exports = {
                     .setColor('#f20000')
                     .setTitle('No instance detected')
                     .setDescription('No instance was detected. Please run the **__/createinstance__** command to create an instance.')
-                    .addFields({ name: 'After creating your instance :', value: "Just do **__/dashboard__**", inline: true })
-                await interaction.editReply({ embeds: [embed] });
+                    .addFields({
+                        name: 'After creating your instance :',
+                        value: "Just do **__/dashboard__**",
+                        inline: true
+                    })
+                await interaction.editReply({embeds: [embed]});
                 return;
             }
         } catch (error) {
@@ -58,18 +63,22 @@ module.exports = {
                 new ButtonBuilder()
                     .setCustomId('start')
                     .setLabel('Start')
+                    .setEmoji('1190143453250732052')
                     .setStyle(ButtonStyle.Success),
                 new ButtonBuilder()
                     .setCustomId('stop')
                     .setLabel('Stop')
+                    .setEmoji('1190143455024922704')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('delete')
                     .setLabel('Delete')
+                    .setEmoji('1190143456346116126')
                     .setStyle(ButtonStyle.Danger),
                 new ButtonBuilder()
                     .setCustomId('edit')
                     .setLabel('Settings')
+                    .setEmoji('1190144206598062131')
                     .setStyle(ButtonStyle.Primary)
             );
 
@@ -140,6 +149,85 @@ module.exports = {
                     .setStyle(ButtonStyle.Secondary)
             );
 
+
+        const samsungSelectMenu = [
+            {
+                label: 'Honkai-Impact',
+                description: 'Play Honkai-Impact',
+                value: 'honkaiimpact',
+                emoji: '1190145614491689011'
+            },
+            {
+                label: 'Genshin-Impact',
+                description: 'Play Genshin-Impact',
+                value: 'genshinimpact',
+                emoji: '1190145286195122266'
+            },
+            {
+                label: 'Honkai: Star Rail',
+                description: 'Play Honkai: Star Rail',
+                value: 'honkaistar',
+                emoji: '1190145074097573989'
+            },
+            {
+                label: 'Brawl Stars',
+                description: 'Play Brawl Stars',
+                value: 'brawlstars',
+                emoji: '1190146380845555762'
+            },
+            {
+                label: 'Clash Royale',
+                description: 'Play Clash Royale',
+                value: 'clashroyale',
+                emoji: '1190146240629972992'
+            },
+            {
+                label: 'Clash Of Clans',
+                description: 'Play Clash Of Clans',
+                value: 'clashofclans',
+                emoji: '1190146055153664020'
+            },
+            {
+                label: 'Fortnite',
+                description: 'Play Fortnite',
+                value: 'fortnite',
+                emoji: '1190146804436697088'
+            },
+            {
+                label: 'Roblox',
+                description: 'Play Roblox',
+                value: 'roblox',
+                emoji: '1190146693925183600'
+            },
+            {
+                label: 'Minecraft',
+                description: 'Play Minecraft',
+                value: 'minecraft',
+                emoji: '1190146619472089108'
+            },
+            {
+                label: 'Among Us',
+                description: 'Play Among Us',
+                value: 'amongus',
+                emoji: '1190146460415701034'
+            },
+            {
+                label: 'Stop RPC',
+                description: 'Stop any Samsung Activity',
+                value: 'stoprpc',
+                emoji: '1190143455024922704'
+            }
+        ]
+
+        const samsungSelectMenuBuilder = new StringSelectMenuBuilder()
+            .setCustomId('samsung-games')
+            .setPlaceholder('Select a game')
+            .addOptions(samsungSelectMenu);
+
+        const samsungraw = new ActionRowBuilder()
+            .addComponents(samsungSelectMenuBuilder);
+
+
         const backupbuttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -171,6 +259,12 @@ module.exports = {
                 emoji: '1189687032583294996'
             },
             {
+                label: 'Samsung Spoof',
+                description: 'Here you can spoof your status to samsung activity',
+                value: 'samsungrpc',
+                emoji: '1190143461203128361'
+            },
+            {
                 label: 'Backup',
                 description: 'Here you can find any backups tools',
                 value: 'backup',
@@ -196,7 +290,7 @@ module.exports = {
 
         let initialMessage;
 
-        fetch('http://localhost:3333/instance/containers/status', {
+        fetch('http://90.103.73.192:3333/instance/containers/status', {
             method: 'POST',
             body: JSON.stringify({
                 discordId: interaction.user.id
@@ -210,31 +304,55 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle('Manage your instance')
                     .setDescription('Hey welcome to your instance manager, you can manage your instance here !')
-                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
                 if (data.status === 'running') {
-                    embed.addFields({ name: '<:Status:1189573575506677781> Status', value: '<:StatusOn:1189573574063824906> Running', inline: true });
+                    embed.addFields({
+                        name: '<:Status:1189573575506677781> Status',
+                        value: '<:StatusOn:1189573574063824906> Running',
+                        inline: true
+                    });
                 } else if (data.status === 'exited') {
-                    embed.addFields({ name: '<:Status:1189573575506677781> Status', value: '<:StatusOff:1189573571467546696> Stopped', inline: true });
+                    embed.addFields({
+                        name: '<:Status:1189573575506677781> Status',
+                        value: '<:StatusOff:1189573571467546696> Stopped',
+                        inline: true
+                    });
                 } else {
-                    embed.addFields({ name: '<:Status:1189573575506677781> Status', value: 'Not created', inline: true });
+                    embed.addFields({name: '<:Status:1189573575506677781> Status', value: 'Not created', inline: true});
                 }
 
                 if (data.data && data.data.uptime) {
                     const uptime = data.data.uptime;
                     const uptimeString = `${uptime.months} months, ${uptime.days} days, ${uptime.hours} hours, ${uptime.minutes} minutes, ${uptime.seconds} seconds`;
-                    embed.addFields({ name: '<:Uptime:1189573570444140625> Uptime', value: uptimeString, inline: true });
+                    embed.addFields({name: '<:Uptime:1189573570444140625> Uptime', value: uptimeString, inline: true});
                 }
                 if (data.data) {
-                embed.addFields({ name: '<:RamUsage:1189573578895663204> Memory Usage', value: `${data.data.memoryUsageMB}mb`, inline: true });
-                embed.addFields({ name: '<:RamLimit:1189573580850212874> Memory Limit', value: `${data.data.memoryLimitMB}mb`, inline: true });
-                embed.addFields({ name: '<:CPU:1189573577679323147> CPU Usage', value: `${data.data.cpuUsage}%`, inline: true });
-                embed.addFields({name: '<:settings:1189591044275306606> Default Options', value: `Nitro Auto Claim : **__ON__** <:StatusOn:1189573574063824906>`, inline: false})
+                    embed.addFields({
+                        name: '<:RamUsage:1189573578895663204> Memory Usage',
+                        value: `${data.data.memoryUsageMB}mb`,
+                        inline: true
+                    });
+                    embed.addFields({
+                        name: '<:RamLimit:1189573580850212874> Memory Limit',
+                        value: `${data.data.memoryLimitMB}mb`,
+                        inline: true
+                    });
+                    embed.addFields({
+                        name: '<:CPU:1189573577679323147> CPU Usage',
+                        value: `${data.data.cpuUsage}%`,
+                        inline: true
+                    });
+                    embed.addFields({
+                        name: '<:settings:1189591044275306606> Default Options',
+                        value: `Nitro Auto Claim : **__ON__** <:StatusOn:1189573574063824906>`,
+                        inline: false
+                    })
                 }
-                initialMessage = await interaction.user.send({ embeds: [embed], components: [row1, row2] });
+                initialMessage = await interaction.user.send({embeds: [embed], components: [row1, row2]});
 
                 intervalId = setInterval(async () => {
-                    fetch('http://localhost:3333/instance/containers/status', {
+                    fetch('http://90.103.73.192:3333/instance/containers/status', {
                         method: 'POST',
                         body: JSON.stringify({
                             discordId: interaction.user.id
@@ -248,33 +366,65 @@ module.exports = {
                             const newEmbed = new EmbedBuilder()
                                 .setTitle('Manage your instance')
                                 .setDescription('Hey welcome to your instance manager, you can manage your instance here !')
-                            newEmbed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                            newEmbed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
                             if (data.status === 'running') {
-                                newEmbed.addFields({ name: '<:Status:1189573575506677781> Status', value: '<:StatusOn:1189573574063824906> Running', inline: true });
+                                newEmbed.addFields({
+                                    name: '<:Status:1189573575506677781> Status',
+                                    value: '<:StatusOn:1189573574063824906> Running',
+                                    inline: true
+                                });
                             } else if (data.status === 'exited') {
-                                newEmbed.addFields({ name: '<:Status:1189573575506677781> Status', value: '<:StatusOff:1189573571467546696> Stopped', inline: true });
+                                newEmbed.addFields({
+                                    name: '<:Status:1189573575506677781> Status',
+                                    value: '<:StatusOff:1189573571467546696> Stopped',
+                                    inline: true
+                                });
                             } else {
-                                newEmbed.addFields({ name: '<:Status:1189573575506677781> Status', value: 'Not created', inline: true });
+                                newEmbed.addFields({
+                                    name: '<:Status:1189573575506677781> Status',
+                                    value: 'Not created',
+                                    inline: true
+                                });
                             }
 
                             if (data.data && data.data.uptime) {
                                 const uptime = data.data.uptime;
                                 const uptimeString = `${uptime.months} months, ${uptime.days} days, ${uptime.hours} hours, ${uptime.minutes} minutes, ${uptime.seconds} seconds`;
-                                newEmbed.addFields({ name: '<:Uptime:1189573570444140625> Uptime', value: uptimeString, inline: true });
+                                newEmbed.addFields({
+                                    name: '<:Uptime:1189573570444140625> Uptime',
+                                    value: uptimeString,
+                                    inline: true
+                                });
                             }
 
-                            newEmbed.addFields({ name: '<:RamUsage:1189573578895663204> Memory Usage', value: `${data.data.memoryUsageMB}mb`, inline: true });
-                            newEmbed.addFields({ name: '<:RamLimit:1189573580850212874> Memory Limit', value: `${data.data.memoryLimitMB}mb`, inline: true });
-                            newEmbed.addFields({ name: '<:CPU:1189573577679323147> CPU Usage', value: `${data.data.cpuUsage}%`, inline: true });
+                            newEmbed.addFields({
+                                name: '<:RamUsage:1189573578895663204> Memory Usage',
+                                value: `${data.data.memoryUsageMB}mb`,
+                                inline: true
+                            });
+                            newEmbed.addFields({
+                                name: '<:RamLimit:1189573580850212874> Memory Limit',
+                                value: `${data.data.memoryLimitMB}mb`,
+                                inline: true
+                            });
+                            newEmbed.addFields({
+                                name: '<:CPU:1189573577679323147> CPU Usage',
+                                value: `${data.data.cpuUsage}%`,
+                                inline: true
+                            });
 
-                            newEmbed.addFields({name: '<:settings:1189591044275306606> Default Options', value: `Nitro Auto Claim : **__ON__** <:StatusOn:1189573574063824906>`, inline: false})
+                            newEmbed.addFields({
+                                name: '<:settings:1189591044275306606> Default Options',
+                                value: `Nitro Auto Claim : **__ON__** <:StatusOn:1189573574063824906>`,
+                                inline: false
+                            })
 
                             newEmbed.setTimestamp();
 
                             if (initialMessage) {
                                 const message = await initialMessage;
-                                await message.edit({ embeds: [newEmbed] });
+                                await message.edit({embeds: [newEmbed]});
                             }
                         })
                         .catch((error) => {
@@ -286,557 +436,902 @@ module.exports = {
                 console.error('Error:', error);
             });
 
-        await interaction.editReply({ content: 'Check your dms !', ephemeral: true });
+        await interaction.editReply({content: 'Check your dms !', ephemeral: true});
 
-        client.on('interactionCreate', async (interaction) => {
-            if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
+            client.on('interactionCreate', async (interaction) => {
+                if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
 
-            if (interaction.replied || interaction.deferred) return;
+                if (interaction.replied || interaction.deferred) return;
 
-            try {
-                await interaction.deferReply();
-            } catch (error) {
-                console.error('Error:', error);
-                return;
-            }
+                try {
+                    await interaction.deferReply();
+                } catch (error) {
+                    console.error('Error:', error);
+                    return;
+                }
 
-            if (interaction.isButton()) {
-                switch (interaction.customId) {
-                case 'start':
-                    fetch('http://localhost:3333/instance/containers/start', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            discordId: interaction.user.id
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(async data => {
-                            const embed = new EmbedBuilder()
-                                .setColor('#42f554')
-                                .setTitle('Instance started')
-                                .setDescription('Your instance has been started !')
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                            const message = await interaction.editReply({ embeds: [embed] });
-
-                            setTimeout(() => {
-                                message.delete().catch(console.error);
-                            }, 5000);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
-
-                    break;
-
-                case 'stop':
-                    fetch('http://localhost:3333/instance/containers/stop', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            discordId: interaction.user.id
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(async data => {
-                            const embed = new EmbedBuilder()
-                                .setColor('#f20000')
-                                .setTitle('Instance stopped')
-                                .setDescription('Your instance has been stopped !')
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                            const message = await interaction.editReply({ embeds: [embed] });
-
-                            setTimeout(() => {
-                                message.delete().catch(console.error);
-                            }, 5000);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
-
-                    break;
-
-                case 'delete':
-                    fetch('http://localhost:3333/instance/containers/delete', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            discordId: interaction.user.id
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(async data => {
-                            const embed = new EmbedBuilder()
-                                .setColor('#f20000')
-                                .setTitle('Instance deleted')
-                                .setDescription('Your instance has been deleted !')
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                            const message = await interaction.editReply({ embeds: [embed] });
-
-                            setTimeout(() => {
-                                message.delete().catch(console.error);
-                            }, 5000);
-
-                            clearInterval(intervalId);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
-
-                    break;
-
-                    case 'discord-light':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'discord-light'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#42f554')
-                                    .setTitle('Discord Light')
-                                    .setDescription('Your discord theme has been set to light !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.followUp({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
+                if (interaction.isButton()) {
+                    switch (interaction.customId) {
+                        case 'start':
+                            fetch('http://90.103.73.192:3333/instance/containers/start', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
                             })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Instance started')
+                                        .setDescription('Your instance has been started !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
-                        break;
+                                    const message = await interaction.editReply({embeds: [embed]});
 
-                    case 'discord-dark':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'discord-dark'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#42f554')
-                                    .setTitle('Discord Light')
-                                    .setDescription('Your discord theme has been set to light !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.followUp({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-
-                        break;
-                    case 'bravery':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'hypesquad-bravery'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#42f554')
-                                    .setTitle('Hypesquad Bravery')
-                                    .setDescription('Your hypesquad has been set to Bravery !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
-
-                    case 'brilliance':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'hypesquad-brilliance'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#42f554')
-                                    .setTitle('Hypesquad Brilliance')
-                                    .setDescription('Your hypesquad has been set to Brilliance !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break
-
-                    case 'balance':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'hypesquad-balance'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#42f554')
-                                    .setTitle('Hypesquad Balance')
-                                    .setDescription('Your hypesquad has been set to Balance !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break
-
-                    case 'hypesquad-null':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'hypesquad-none'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#f20000')
-                                    .setTitle('Hypesquad removed')
-                                    .setDescription('Your hypesquad has been removed !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
-
-                    case 'dnd':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'dnd'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#f20000')
-                                    .setTitle('Status changed')
-                                    .setDescription('Your status has been change to dnd')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
-                    case 'online':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'online'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#2cff00')
-                                    .setTitle('Status changed')
-                                    .setDescription('Your status has been change to online')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
-                    case 'offline':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'invisible'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#525252')
-                                    .setTitle('Status changed')
-                                    .setDescription('Your status has been change to offline')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
-                    case 'idle':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'idle'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#b6ae00')
-                                    .setTitle('Status changed')
-                                    .setDescription('Your status has been change to idle')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
-
-                    case 'spoof-status':
-                        fetch('http://localhost:3333/instance/containers/execute',{
-                            method : 'POST',
-                            body : JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'status-spoof'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(async data => {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#42f554')
-                                    .setTitle('Spoof status')
-                                    .setDescription('Your status has been spoofed !')
-                                embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
-
-                                var message = await interaction.editReply({ embeds: [embed] });
-
-                                setTimeout(() => {
-                                    message.delete().catch(console.error);
-                                }, 5000);
-                            })
-                        break
-
-                    case 'backup-friends':
-                        fetch('http://localhost:3333/instance/containers/execute', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                discordId: interaction.user.id,
-                                action: 'backup-friends'
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                fetch('http://localhost:3333/files/download/', {
-                                    method: 'GET'
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
                                 })
-                                    .then(response => response.arrayBuffer())
-                                    .then(arrayBuffer => {
-                                        const fileBuffer = Buffer.from(arrayBuffer);
-                                        const attachment = new AttachmentBuilder(fileBuffer, { name: 'friends.json' });
-                                        const embed = new EmbedBuilder()
-                                            .setColor('#42f554')
-                                            .setTitle('Backup Friends')
-                                            .setDescription('Your friends has been backuped !')
-                                        embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
 
-                                        return interaction.editReply({ embeds: [embed], files: [attachment] });
-                                    })
-                                    .then(async message => {
-                                        setTimeout(async () => {
-                                            await message.delete().catch(console.error);
-                                        }, 10000);
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                    });
+                            break;
+
+                        case 'stop':
+                            fetch('http://90.103.73.192:3333/instance/containers/stop', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
                             })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                        break;
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#f20000')
+                                        .setTitle('Instance stopped')
+                                        .setDescription('Your instance has been stopped !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    const message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+
+                            break;
+
+                        case 'delete':
+                            fetch('http://90.103.73.192:3333/instance/containers/delete', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#f20000')
+                                        .setTitle('Instance deleted')
+                                        .setDescription('Your instance has been deleted !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    const message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+
+                                    clearInterval(intervalId);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+
+                            break;
+
+                        case 'discord-light':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'discord-light'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Discord Light')
+                                        .setDescription('Your discord theme has been set to light !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+
+                            break;
+
+                        case 'discord-dark':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'discord-dark'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Discord Light')
+                                        .setDescription('Your discord theme has been set to light !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+
+                            break;
+                        case 'bravery':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'hypesquad-bravery'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Hypesquad Bravery')
+                                        .setDescription('Your hypesquad has been set to Bravery !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+
+                        case 'brilliance':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'hypesquad-brilliance'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Hypesquad Brilliance')
+                                        .setDescription('Your hypesquad has been set to Brilliance !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break
+
+                        case 'balance':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'hypesquad-balance'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Hypesquad Balance')
+                                        .setDescription('Your hypesquad has been set to Balance !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break
+
+                        case 'hypesquad-null':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'hypesquad-none'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#f20000')
+                                        .setTitle('Hypesquad removed')
+                                        .setDescription('Your hypesquad has been removed !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+
+                        case 'dnd':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'dnd'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#f20000')
+                                        .setTitle('Status changed')
+                                        .setDescription('Your status has been change to dnd')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+                        case 'online':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'online'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#2cff00')
+                                        .setTitle('Status changed')
+                                        .setDescription('Your status has been change to online')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+                        case 'offline':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'invisible'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#525252')
+                                        .setTitle('Status changed')
+                                        .setDescription('Your status has been change to offline')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+                        case 'idle':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'idle'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#b6ae00')
+                                        .setTitle('Status changed')
+                                        .setDescription('Your status has been change to idle')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+
+                        case 'spoof-status':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'status-spoof'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Spoof status')
+                                        .setDescription('Your status has been spoofed !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'backup-friends':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'backup-friends'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    fetch('http://90.103.73.192:3333/files/download/', {
+                                        method: 'GET'
+                                    })
+                                        .then(response => response.arrayBuffer())
+                                        .then(arrayBuffer => {
+                                            const fileBuffer = Buffer.from(arrayBuffer);
+                                            const attachment = new AttachmentBuilder(fileBuffer, {name: 'friends.json'});
+                                            const embed = new EmbedBuilder()
+                                                .setColor('#42f554')
+                                                .setTitle('Backup Friends')
+                                                .setDescription('Your friends has been backuped !')
+                                            embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                            return interaction.editReply({embeds: [embed], files: [attachment]});
+                                        })
+                                        .then(async message => {
+                                            setTimeout(async () => {
+                                                await message.delete().catch(console.error);
+                                            }, 10000);
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                        });
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            break;
+
+                        /*
+                        samsung RPC
+                         */
 
 
+                        default:
+                            await interaction.reply('Unknown button');
+                            break;
+                    }
+                } else if (interaction.isStringSelectMenu()) {
+                    const selectedOption = interaction.values[0];
 
+                    switch (selectedOption) {
 
-                default:
-                    await interaction.reply('Unknown button');
-                    break;
-            }
-            } else if (interaction.isStringSelectMenu()) {
-                const selectedOption = interaction.values[0];
-
-                switch (selectedOption) {
-
-                    case 'status':
-                        var embed = new EmbedBuilder()
+                        case 'status':
+                            var embed = new EmbedBuilder()
                                 .setColor('#0042ff')
                                 .setTitle('Status')
                                 .setDescription('Change your status')
-                                .addFields({ name: 'Status', value: 'Online : **__For people who want to be online__**\nIdle : **__For people who want to be idle__**\nDnd : **__For people who want to be dnd__**\nOffline : **__For people who want to be offline__**', inline: false })
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                                .addFields({
+                                    name: 'Status',
+                                    value: 'Online : **__For people who want to be online__**\nIdle : **__For people who want to be idle__**\nDnd : **__For people who want to be dnd__**\nOffline : **__For people who want to be offline__**',
+                                    inline: false
+                                })
+                            embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
-                        var message = await interaction.editReply({ embeds: [embed], components: [statusbuttons] });
+                            var message = await interaction.editReply({embeds: [embed], components: [statusbuttons]});
 
-                        setTimeout(() => {
-                            message.delete().catch(console.error);
-                        }, 20000);
-                        break;
+                            setTimeout(() => {
+                                message.delete().catch(console.error);
+                            }, 20000);
+                            break;
 
-                    case 'hypesquads':
+                        case 'hypesquads':
                             var embed = new EmbedBuilder()
                                 .setColor('#0042ff')
                                 .setTitle('Hypesquad Houses')
                                 .setDescription('Here you can select your Hypesquad Houses (The badges on your profile)')
-                                .addFields({ name: 'Houses', value: 'Brilliance : **__For smart people__**\nBravery : **__For brave people__**\nBalance : **__For people who dont know what to choose__**', inline: false })
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                                .addFields({
+                                    name: 'Houses',
+                                    value: 'Brilliance : **__For smart people__**\nBravery : **__For brave people__**\nBalance : **__For people who dont know what to choose__**',
+                                    inline: false
+                                })
+                            embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
-                            var message = await interaction.editReply({ embeds: [embed], components: [hypebuttons] });
-                        setTimeout(() => {
-                            message.delete().catch(console.error);
-                        }, 20000);
-                        break;
-                    case 'themes':
+                            var message = await interaction.editReply({embeds: [embed], components: [hypebuttons]});
+                            setTimeout(() => {
+                                message.delete().catch(console.error);
+                            }, 20000);
+                            break;
+                        case 'themes':
                             var embed = new EmbedBuilder()
                                 .setColor('#0042ff')
                                 .setTitle('Themes')
                                 .setDescription('Select your Theme for your Discord Client !')
-                                .addFields({ name: 'Basic Themes', value: 'Dark Theme : **__For normal people__**\nLight Theme : **__Bro i think.. you dont want to see.. if you click.. BLUD NO DONT DO THAT__**', inline: false })
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                                .addFields({
+                                    name: 'Basic Themes',
+                                    value: 'Dark Theme : **__For normal people__**\nLight Theme : **__Bro i think.. you dont want to see.. if you click.. BLUD NO DONT DO THAT__**',
+                                    inline: false
+                                })
+                            embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
-                           var message = await interaction.editReply({ embeds: [embed], components: [themebuttons]});
+                            var message = await interaction.editReply({embeds: [embed], components: [themebuttons]});
                             setTimeout(() => {
                                 message.delete().catch(console.error);
                             }, 20000);
-                        break;
+                            break;
 
-                    case 'backup':
-                        var embed = new EmbedBuilder()
+                        case 'backup':
+                            var embed = new EmbedBuilder()
                                 .setColor('#0042ff')
                                 .setTitle('Backup')
                                 .setDescription('Here you can find any backup tools')
-                                .addFields({ name: 'Backup', value: 'Backup Friends : **__Backup your friends to a json files__**', inline: false })
-                            embed.setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                                .addFields({
+                                    name: 'Backup',
+                                    value: 'Backup Friends : **__Backup your friends to a json files__**',
+                                    inline: false
+                                })
+                            embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
-                        var message = await interaction.editReply({ embeds: [embed], components: [backupbuttons]});
-                        setTimeout(() => {
-                            message.delete().catch(console.error);
-                        }, 20000);
-                        break;
+                            var message = await interaction.editReply({embeds: [embed], components: [backupbuttons]});
+                            setTimeout(() => {
+                                message.delete().catch(console.error);
+                            }, 20000);
+                            break;
 
-                    default:
-                        var message = await interaction.editReply('Unknown option');
-                        setTimeout(() => {
-                            message.delete().catch(console.error);
-                        }, 5000);
-                        break;
+                        case 'samsungrpc':
+                            var embed = new EmbedBuilder()
+                                .setColor('#0042ff')
+                                .setTitle('Samsung RPC')
+                                .setDescription('Here you can spoof your status to samsung activity')
+                                .addFields({
+                                    name: 'Samsung RPC',
+                                    value: 'Honkai-Impact : **__For people who play honkai impact__**\nGenshin-Impact : **__For people who play genshin impact__**\nHonkai: Star Rail : **__For people who play honkai star rail__**\nBrawl Stars : **__For people who play brawl stars__**\nClash Royale : **__For people who play clash royale__**\nClash Of Clans : **__For people who play CoC__**\nFortnite : **__For people who play fortnite__**\nRoblox : **__For people who play roblox__**\nMinecraft : **__For people who play minecraft__**\nAmong Us : **__For people who play among us__**\n**__A preview of the Samsung RPC:__**',
+                                    inline: false
+                                })
+                            embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+                            embed.setImage('https://media.discordapp.net/attachments/1186000202004434975/1190148514110517288/chrome_931hOUyg9Y.png?ex=65a0bf2d&is=658e4a2d&hm=5406ae2a093ad56022cf484bba032e329b84daa8417595ad1f612f05d4e93214&=&format=webp&quality=lossless')
+                            var message = await interaction.editReply({embeds: [embed], components: [samsungraw]});
+                            setTimeout(() => {
+                                message.delete().catch(console.error);
+                            }, 20000);
+                            break;
+
+                        /*
+                        samsung RPC select menu
+
+
+
+
+
+
+
+
+                        Samsung RPC
+                         */
+
+                        case 'honkaiimpact':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'honkaiimpact'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to honkai impact !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'genshinimpact':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'genshinimpact'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to genshin impact !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'honkaistar':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'honkaistarrail'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to honkai star rail !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'brawlstars':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'brawlstars'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to brawl stars !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'clashroyale':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'clashroyale'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to clash royale !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'clashofclans':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'clashofclans'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to clash of clans !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.followUp({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break
+
+                        case 'fortnite':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'fortnite'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to fortnite !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break;
+
+                        case 'roblox':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'roblox'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to roblox !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break;
+
+                        case 'minecraft':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'minecraft'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to minecraft !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break;
+
+                        case 'amongus':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'amongus'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('Your status has been spoofed to among us !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break;
+
+                        case 'stoprpc':
+                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    discordId: interaction.user.id,
+                                    action: 'stoprpc'
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(async data => {
+                                    const embed = new EmbedBuilder()
+                                        .setColor('#42f554')
+                                        .setTitle('Samsung RPC')
+                                        .setDescription('All of your rpc has been stopped !')
+                                    embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
+
+                                    var message = await interaction.editReply({embeds: [embed]});
+                                    setTimeout(() => {
+                                        message.delete().catch(console.error);
+                                    }, 5000);
+                                })
+                            break;
+
+
+                        default:
+                            var message = await interaction.editReply('Unknown option');
+                            setTimeout(() => {
+                                message.delete().catch(console.error);
+                            }, 5000);
+                            break;
+
+                    }
                 }
-            }
-        })
-    }
-};
+            });
+        }
+}

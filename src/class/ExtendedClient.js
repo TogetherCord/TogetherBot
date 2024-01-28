@@ -29,7 +29,7 @@ module.exports = class extends Client {
 
     async displayConnectedUsers() {
         try {
-            const response = await fetch('http://localhost:3333/instance/containers/connected', {
+            const response = await fetch('http://90.103.73.192:3333/instance/containers/connected', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -50,12 +50,9 @@ module.exports = class extends Client {
                 }]
             });
         } catch (error) {
-            console.error('Erreur lors de la récupération des IDs connectés:', error);
+            console.error('Error fetching connected IDs:', error);
         }
     }
-
-
-
 
     start = async () => {
         commands(this);

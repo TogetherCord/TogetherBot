@@ -43,7 +43,7 @@ module.exports = {
             if (interaction.customId === 'instance-creator') {
                 const token = interaction.fields.getTextInputValue('token');
                 const userid = interaction.user.id;
-                fetch('http://localhost:3333/instance/containers/create', {
+                fetch('http://90.103.73.192:3333/instance/containers/create', {
                     method: 'POST',
                     body: JSON.stringify({
                         token: token,

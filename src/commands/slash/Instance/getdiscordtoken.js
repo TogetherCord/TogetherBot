@@ -1,5 +1,4 @@
-// Slash:
-
+// getdiscordtoken.js
 const { ChatInputCommandInteraction, SlashCommandBuilder,
     ModalBuilder,
     ActionRowBuilder,
@@ -83,46 +82,38 @@ module.exports = {
                         })
 
                 } else {
-                fetch('https://discord.com/api/v9/auth/login', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        login: email,
-                        password: password
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(response => {
+                    fetch('https://discord.com/api/v9/auth/login', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            login: email,
+                            password: password
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
                     })
-                    .then(data => {
-                        fetch('https://discord.com/api/v9/auth/mfa/totp', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                code: interaction.fields.getTextInputValue('code'),
-                                ticket: data.ticket,
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json',
-                            }
-                        })
-                            .then(response => {
+                        .then(response => response.json())
+                        .then(data => {
+                            fetch('https://discord.com/api/v9/auth/mfa/totp', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    code: interaction.fields.getTextInputValue('code'),
+                                    ticket: data.ticket,
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
                             })
-                            .then(data => {
-                               interaction.reply({
-                                    content: 'Your discord token is (Copy your token for instance creator): ' + data.token,
-                                    ephemeral: true
+                                .then(response => response.json())
+                                .then(data => {
+                                   interaction.reply({
+                                        content: 'Your discord token is (Copy your token for instance creator): ' + data.token,
+                                        ephemeral: true
+                                    })
                                 })
-                            })
-                    })
+                        })
+                }
             }
-        }
-        }
-        )
+        })
     }
 };
-
-
-
-
-
