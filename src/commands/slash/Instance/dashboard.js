@@ -15,6 +15,7 @@ const ExtendedClient = require('../../../class/ExtendedClient');
 
 let intervalId;
 
+
 module.exports = {
     structure: new SlashCommandBuilder()
         .setName('dashboard')
@@ -36,6 +37,7 @@ module.exports = {
                     'Content-Type': 'application/json'
                 }
             });
+
 
             const data = await response.json();
 
@@ -439,6 +441,23 @@ module.exports = {
         await interaction.editReply({content: 'Check your dms !', ephemeral: true});
 
             client.on('interactionCreate', async (interaction) => {
+
+                async function togetherrequest(action) {
+                    const res = await fetch('http://90.103.73.192:3333/instance/containers/execute', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            discordId: interaction.user.id,
+                            action: action
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    const data = await res.json();
+                    return data
+                }
+
+
                 if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
 
                 if (interaction.replied || interaction.deferred) return;
@@ -545,19 +564,8 @@ module.exports = {
                             break;
 
                         case 'discord-light':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'discord-light'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('discord-light');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Discord Light')
                                         .setDescription('Your discord theme has been set to light !')
@@ -568,30 +576,14 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
-
                             break;
 
                         case 'discord-dark':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'discord-dark'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('discord-dark');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
-                                        .setTitle('Discord Light')
-                                        .setDescription('Your discord theme has been set to light !')
+                                        .setTitle('Discord Dark')
+                                        .setDescription('Your discord theme has been set to dark !')
                                     embed.setThumbnail(client.user.displayAvatarURL({dynamic: true}));
 
                                     var message = await interaction.followUp({embeds: [embed]});
@@ -599,26 +591,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
-
                             break;
+
                         case 'bravery':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'hypesquad-bravery'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('hypesquad-bravery');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Hypesquad Bravery')
                                         .setDescription('Your hypesquad has been set to Bravery !')
@@ -629,26 +606,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break;
 
                         case 'brilliance':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'hypesquad-brilliance'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('hypesquad-brilliance');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Hypesquad Brilliance')
                                         .setDescription('Your hypesquad has been set to Brilliance !')
@@ -659,26 +621,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break
 
                         case 'balance':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'hypesquad-balance'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('hypesquad-balance');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Hypesquad Balance')
                                         .setDescription('Your hypesquad has been set to Balance !')
@@ -689,26 +636,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break
 
                         case 'hypesquad-null':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'hypesquad-none'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('hypesquad-none');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#f20000')
                                         .setTitle('Hypesquad removed')
                                         .setDescription('Your hypesquad has been removed !')
@@ -719,26 +651,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break;
 
                         case 'dnd':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'dnd'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('dnd');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#f20000')
                                         .setTitle('Status changed')
                                         .setDescription('Your status has been change to dnd')
@@ -749,25 +666,10 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break;
                         case 'online':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'online'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('online');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#2cff00')
                                         .setTitle('Status changed')
                                         .setDescription('Your status has been change to online')
@@ -778,25 +680,10 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break;
                         case 'offline':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'invisible'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('invisible');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#525252')
                                         .setTitle('Status changed')
                                         .setDescription('Your status has been change to offline')
@@ -807,25 +694,10 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break;
                         case 'idle':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'idle'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('idle');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#b6ae00')
                                         .setTitle('Status changed')
                                         .setDescription('Your status has been change to idle')
@@ -836,26 +708,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
                             break;
 
                         case 'spoof-status':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'status-spoof'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('status-spoof');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Spoof status')
                                         .setDescription('Your status has been spoofed !')
@@ -866,7 +723,6 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'backup-friends':
@@ -887,9 +743,9 @@ module.exports = {
                                     })
                                         .then(response => response.arrayBuffer())
                                         .then(arrayBuffer => {
-                                            const fileBuffer = Buffer.from(arrayBuffer);
-                                            const attachment = new AttachmentBuilder(fileBuffer, {name: 'friends.json'});
-                                            const embed = new EmbedBuilder()
+                                            var fileBuffer = Buffer.from(arrayBuffer);
+                                            var attachment = new AttachmentBuilder(fileBuffer, {name: 'friends.json'});
+                                            var embed = new EmbedBuilder()
                                                 .setColor('#42f554')
                                                 .setTitle('Backup Friends')
                                                 .setDescription('Your friends has been backuped !')
@@ -1029,19 +885,8 @@ module.exports = {
                          */
 
                         case 'honkaiimpact':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'honkaiimpact'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('honkaiimpact');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to honkai impact !')
@@ -1052,23 +897,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'genshinimpact':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'genshinimpact'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('genshinimpact');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to genshin impact !')
@@ -1079,23 +912,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'honkaistar':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'honkaistarrail'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('honkaistarrail');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to honkai star rail !')
@@ -1106,23 +927,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'brawlstars':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'brawlstars'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('brawlstars');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to brawl stars !')
@@ -1133,23 +942,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'clashroyale':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'clashroyale'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('clashroyale');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to clash royale !')
@@ -1160,23 +957,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'clashofclans':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'clashofclans'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('clashofclans');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to clash of clans !')
@@ -1187,23 +972,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break
 
                         case 'fortnite':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'fortnite'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('fortnite');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to fortnite !')
@@ -1213,23 +986,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break;
 
                         case 'roblox':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'roblox'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('roblox');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to roblox !')
@@ -1239,23 +1000,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break;
 
                         case 'minecraft':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'minecraft'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('minecraft');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to minecraft !')
@@ -1266,23 +1015,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break;
 
                         case 'amongus':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'amongus'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('amongus');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('Your status has been spoofed to among us !')
@@ -1293,23 +1030,11 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break;
 
                         case 'stoprpc':
-                            fetch('http://90.103.73.192:3333/instance/containers/execute', {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    discordId: interaction.user.id,
-                                    action: 'stoprpc'
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(async data => {
-                                    const embed = new EmbedBuilder()
+                            var data = await togetherrequest('stoprpc');
+                                    var embed = new EmbedBuilder()
                                         .setColor('#42f554')
                                         .setTitle('Samsung RPC')
                                         .setDescription('All of your rpc has been stopped !')
@@ -1319,7 +1044,6 @@ module.exports = {
                                     setTimeout(() => {
                                         message.delete().catch(console.error);
                                     }, 5000);
-                                })
                             break;
 
 
