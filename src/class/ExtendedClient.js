@@ -29,7 +29,7 @@ module.exports = class extends Client {
 
     async displayConnectedUsers() {
         try {
-            const response = await fetch('http://90.103.73.192:3333/instance/containers/connected', {
+            const response = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -62,6 +62,7 @@ module.exports = class extends Client {
         if (config.handler.mongodb.toggle) mongoose();
 
         await this.login(process.env.CLIENT_TOKEN || config.client.token);
+        this.setMaxListeners(0);
 
         if (config.handler.deploy) deploy(this, config);
         setInterval(() => this.displayConnectedUsers(), 1000);

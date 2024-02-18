@@ -35,12 +35,12 @@ module.exports = {
         const statusMessage = fetchedMessages.first();
 
         setInterval(async () => {
-            const connecteduser = await fetch('http://90.103.73.192:3333/instance/containers/connected');
+            const connecteduser = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected');
             const data = await connecteduser.json();
             const connectedIds = data.data;
             const idstonumber = connectedIds.length;
 
-            const allinstance = await fetch('http://90.103.73.192:3333/manager/status', {
+            const allinstance = await fetch('http://togethercord.unknownandev.me:3333/manager/status', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -54,7 +54,7 @@ module.exports = {
             const cpuusage = data2.averageCpuUsagePercent;
             const cpuusage2 = cpuusage.toFixed(2);
 
-            const pingResponse = await fetch('http://90.103.73.192:3333/manager/ping', {
+            const pingResponse = await fetch('http://togethercord.unknownandev.me:3333/manager/ping', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -89,7 +89,7 @@ module.exports = {
 
         setInterval(async () => {
             try {
-                const response = await fetch('http://90.103.73.192:3333/instance/containers/connected');
+                const response = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected');
                 const data = await response.json();
                 const connectedIds = data.data;
 
