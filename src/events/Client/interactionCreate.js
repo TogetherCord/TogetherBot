@@ -346,6 +346,9 @@ module.exports = {
                 "http://togethercord.unknownandev.me:3333/files/download/",
                 {
                   method: "GET",
+                    headers: {
+                        "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
+                    }
                 }
               )
                 .then((response) => response.arrayBuffer())
