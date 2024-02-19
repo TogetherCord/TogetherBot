@@ -32,7 +32,8 @@ module.exports = class extends Client {
             const response = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected', {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
                 }
             });
             if (!response.ok) {

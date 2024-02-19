@@ -30,6 +30,7 @@ module.exports = {
                     }),
                     headers: {
                         "Content-Type": "application/json",
+                        "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
                     },
                 }
             );
@@ -137,12 +138,12 @@ module.exports = {
                     }),
                     headers: {
                         "Content-Type": "application/json",
+                        "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
                     },
                 }
             )
             .then((response) => response.json())
             .then(async (data) => {
-                console.log(data)
                 const embed = new EmbedBuilder()
                     .setTitle("Manage your instance")
                     .setDescription(
@@ -217,6 +218,7 @@ module.exports = {
                                 }),
                                 headers: {
                                     "Content-Type": "application/json",
+                                    "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
                                 },
                             }
                         )

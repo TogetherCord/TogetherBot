@@ -35,7 +35,14 @@ module.exports = {
         const statusMessage = fetchedMessages.first();
 
         setInterval(async () => {
-            const connecteduser = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected');
+            const connecteduser = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected'
+                , {
+                    method: 'GET',
+                    headers: {
+                        "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
+                    }
+
+                });
             const data = await connecteduser.json();
             const connectedIds = data.data;
             const idstonumber = connectedIds.length;
@@ -43,7 +50,8 @@ module.exports = {
             const allinstance = await fetch('http://togethercord.unknownandev.me:3333/manager/status', {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
                 }
             });
             const data2 = await allinstance.json();
@@ -57,7 +65,8 @@ module.exports = {
             const pingResponse = await fetch('http://togethercord.unknownandev.me:3333/manager/ping', {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
                 }
             });
             const data3 = await pingResponse.json();
@@ -89,7 +98,13 @@ module.exports = {
 
         setInterval(async () => {
             try {
-                const response = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected');
+                const response = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/connected', {
+                    method: 'GET',
+                    headers: {
+                        "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
+                    }
+
+                });
                 const data = await response.json();
                 const connectedIds = data.data;
 
