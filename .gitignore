@@ -5,5 +5,4 @@ component.example.txt
 event.example.txt
 
 # DO NOT REMOVE THESE FOR SECURITY
-src/config.js
 .env
