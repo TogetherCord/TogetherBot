@@ -25,8 +25,14 @@ module.exports = {
     run: async (client, interaction) => {
         const cguEmbed = new EmbedBuilder()
             .setTitle('Terms of Service')
-            .setDescription('By creating an instance, you agree to the terms of service.')
+            .setDescription('Please read the terms of service before creating an instance. If you agree, click on the "Accept" button. If you disagree, click on the "Decline" button.')
             .setColor('#FF0000')
+            .addFields({
+                name: 'TogetherCord Terms of Service',
+                value: 'By creating an instance, you agree to the terms of service, which can be found [On this Page](https://unknownandev.me/togethercord/index.html).',
+                inline: true
+            })
+
 
 
         const row = new ActionRowBuilder()
