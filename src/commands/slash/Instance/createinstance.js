@@ -7,7 +7,7 @@ const { ChatInputCommandInteraction, SlashCommandBuilder,
     TextInputStyle,
     EmbedBuilder,
     ButtonBuilder,
-    ButtonStyle, Embed
+    ButtonStyle, Embed, ComponentType
 } = require('discord.js');
 const ExtendedClient = require('../../../class/ExtendedClient');
 
@@ -41,7 +41,7 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger)
             );
 
-        await interaction.reply({
+        const msg = await interaction.reply({
             embeds: [cguEmbed],
             components: [row]
         });
@@ -61,15 +61,19 @@ module.exports = {
                     )
             );
 
-
-
-        client.once('interactionCreate', async (interaction) => {
-            if (!interaction.isButton()) return;
-            if (interaction.customId === 'accept') {
-                await interaction.showModal(modal);
-            } else if (interaction.customId === 'refuse') {
-                await interaction.deferReply('Vous avez refusé les conditions générales d\'utilisation.');
+        const collector = msg.createMessageComponentCollector({componentType: ComponentType.Button, time: 60000})
+        
+        collector.on('collect', async i => {
+            if (i.user.id !== interaction.user.id) return i.deferReply({content: "Vous ne pouvez pas utiliser ce bouton", ephemeral: true})
+            if (i.customId === 'accept') {
+                await i.showModal(modal);
+            } else if (i.customId === 'decline') {
+                i.reply({content: "Vous avez refusé les conditions générales d\'utilisation", ephemeral: true})
+                await msg.edit({components: []})
             }
-        });
+        })
 
+        setInterval(() => {
+            msg.edit({components: []})
+        }, 60000);
     }};

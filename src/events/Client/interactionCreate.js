@@ -45,6 +45,8 @@ module.exports = {
     if (interaction.replied || interaction.deferred) return;
 
     try {
+      if (interaction.customId == "accept") return;
+      if (interaction.customId == "decline") return;
       await interaction.deferReply();
     } catch (error) {
       console.error("Error:", error);
@@ -388,8 +390,6 @@ module.exports = {
                 samsung RPC
                  */
 
-        default:
-          await interaction.reply("Unknown button");
           break;
       }
     } else if (interaction.isStringSelectMenu()) {
