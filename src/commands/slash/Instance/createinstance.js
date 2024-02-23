@@ -70,11 +70,11 @@ module.exports = {
         const collector = msg.createMessageComponentCollector({componentType: ComponentType.Button, time: 60000})
         
         collector.on('collect', async i => {
-            if (i.user.id !== interaction.user.id) return i.deferReply({content: "Vous ne pouvez pas utiliser ce bouton", ephemeral: true})
+            if (i.user.id !== interaction.user.id) return i.deferReply({content: "You cannot use this button", ephemeral: true})
             if (i.customId === 'accept') {
                 await i.showModal(modal);
             } else if (i.customId === 'decline') {
-                i.reply({content: "Vous avez refusé les conditions générales d\'utilisation", ephemeral: true})
+                i.reply({content: "You have refused the general conditions of use", ephemeral: true})
                 await msg.edit({components: []})
             }
         })
