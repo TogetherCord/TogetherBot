@@ -1,6 +1,6 @@
 async function getInstanceNumber(){
     try {
-        const response = await fetch('http://localhost:3333/instance/containers/list', {
+        const response = await fetch('http://togethercord.unknownandev.me:3333/instance/containers/list', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
