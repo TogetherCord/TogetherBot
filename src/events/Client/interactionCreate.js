@@ -7,6 +7,7 @@ const {
     AttachmentBuilder
 } = require('discord.js');
 const ExtendedClient = require('../../class/ExtendedClient');
+const ExecuteAPI = require('../../class/Request/ExecuteAPI');
 
 let intervalId;
 
@@ -21,24 +22,6 @@ module.exports = {
    * @returns
    */
   run: async (client, interaction) => {
-    async function togetherrequest(action) {
-      const res = await fetch(
-        "http://togethercord.unknownandev.me:3333/instance/containers/execute",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            discordId: interaction.user.id,
-            action: action,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-              "x-api-key": "OmZ5TDJRARai4P0617sL0IIB3oV1CzxP"
-          },
-        }
-      );
-      const data = await res.json();
-      return data;
-    }
 
     if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
 
@@ -166,7 +149,7 @@ module.exports = {
           break;
 
         case "discord-light":
-          var data = await togetherrequest("discord-light");
+          var data = await ExecuteAPI("discord-light", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Discord Light")
@@ -181,7 +164,7 @@ module.exports = {
           break;
 
         case "discord-dark":
-          var data = await togetherrequest("discord-dark");
+          var data = await ExecuteAPI("discord-dark", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Discord Dark")
@@ -196,7 +179,7 @@ module.exports = {
           break;
 
         case "bravery":
-          var data = await togetherrequest("hypesquad-bravery");
+          var data = await ExecuteAPI("hypesquad-bravery", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Hypesquad Bravery")
@@ -211,7 +194,7 @@ module.exports = {
           break;
 
         case "brilliance":
-          var data = await togetherrequest("hypesquad-brilliance");
+          var data = await ExecuteAPI("hypesquad-brilliance", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Hypesquad Brilliance")
@@ -226,7 +209,7 @@ module.exports = {
           break;
 
         case "balance":
-          var data = await togetherrequest("hypesquad-balance");
+          var data = await ExecuteAPI("hypesquad-balance", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Hypesquad Balance")
@@ -241,7 +224,7 @@ module.exports = {
           break;
 
         case "hypesquad-null":
-          var data = await togetherrequest("hypesquad-none");
+          var data = await ExecuteAPI("hypesquad-none", interaction);
           var embed = new EmbedBuilder()
             .setColor("#f20000")
             .setTitle("Hypesquad removed")
@@ -256,7 +239,7 @@ module.exports = {
           break;
 
         case "dnd":
-          var data = await togetherrequest("dnd");
+          var data = await ExecuteAPI("dnd", interaction);
           var embed = new EmbedBuilder()
             .setColor("#f20000")
             .setTitle("Status changed")
@@ -270,7 +253,7 @@ module.exports = {
           }, 5000);
           break;
         case "online":
-          var data = await togetherrequest("online");
+          var data = await ExecuteAPI("online", interaction);
           var embed = new EmbedBuilder()
             .setColor("#2cff00")
             .setTitle("Status changed")
@@ -284,7 +267,7 @@ module.exports = {
           }, 5000);
           break;
         case "offline":
-          var data = await togetherrequest("invisible");
+          var data = await ExecuteAPI("invisible", interaction);
           var embed = new EmbedBuilder()
             .setColor("#525252")
             .setTitle("Status changed")
@@ -298,7 +281,7 @@ module.exports = {
           }, 5000);
           break;
         case "idle":
-          var data = await togetherrequest("idle");
+          var data = await ExecuteAPI("idle", interaction);
           var embed = new EmbedBuilder()
             .setColor("#b6ae00")
             .setTitle("Status changed")
@@ -313,7 +296,7 @@ module.exports = {
           break;
 
         case "spoof-status":
-          var data = await togetherrequest("status-spoof");
+          var data = await ExecuteAPI("status-spoof", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Spoof status")
@@ -680,7 +663,7 @@ module.exports = {
                  */
 
         case "honkaiimpact":
-          var data = await togetherrequest("honkaiimpact");
+          var data = await ExecuteAPI("honkaiimpact", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -695,7 +678,7 @@ module.exports = {
           break;
 
         case "genshinimpact":
-          var data = await togetherrequest("genshinimpact");
+          var data = await ExecuteAPI("genshinimpact", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -710,7 +693,7 @@ module.exports = {
           break;
 
         case "honkaistar":
-          var data = await togetherrequest("honkaistarrail");
+          var data = await ExecuteAPI("honkaistarrail", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -727,7 +710,7 @@ module.exports = {
           break;
 
         case "brawlstars":
-          var data = await togetherrequest("brawlstars");
+          var data = await ExecuteAPI("brawlstars", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -742,7 +725,7 @@ module.exports = {
           break;
 
         case "clashroyale":
-          var data = await togetherrequest("clashroyale");
+          var data = await ExecuteAPI("clashroyale", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -757,7 +740,7 @@ module.exports = {
           break;
 
         case "clashofclans":
-          var data = await togetherrequest("clashofclans");
+          var data = await ExecuteAPI("clashofclans", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -772,7 +755,7 @@ module.exports = {
           break;
 
         case "fortnite":
-          var data = await togetherrequest("fortnite");
+          var data = await ExecuteAPI("fortnite", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -786,7 +769,7 @@ module.exports = {
           break;
 
         case "roblox":
-          var data = await togetherrequest("roblox");
+          var data = await ExecuteAPI("roblox", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -800,7 +783,7 @@ module.exports = {
           break;
 
         case "minecraft":
-          var data = await togetherrequest("minecraft");
+          var data = await ExecuteAPI("minecraft", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -815,7 +798,7 @@ module.exports = {
           break;
 
         case "amongus":
-          var data = await togetherrequest("amongus");
+          var data = await ExecuteAPI("amongus", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
@@ -830,7 +813,7 @@ module.exports = {
           break;
 
         case "stoprpc":
-          var data = await togetherrequest("stoprpc");
+          var data = await ExecuteAPI("stoprpc", interaction);
           var embed = new EmbedBuilder()
             .setColor("#42f554")
             .setTitle("Samsung RPC")
